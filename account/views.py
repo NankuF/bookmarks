@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
@@ -71,6 +72,9 @@ def edit(request):
         else:
             messages.error(request, 'Error updating your profile')
     else:
+        #  get_or_create - Покажи или создай профиль юзера.
+        Profile.objects.get_or_create(user=request.user)
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
+
     return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})
